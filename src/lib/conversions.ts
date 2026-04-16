@@ -86,7 +86,9 @@ export function parseQuantity(str: string): { amount: number; unit: string } | n
 
   const match = normalised.match(/^([\d./]+)\s*(.+)$/)
   if (!match) return null
-  const amount = eval(match[1]) // handles "1/3" style fractions safely
+  // Handle "1/3" style fractions without eval
+  const [numStr, denStr] = match[1].split('/')
+  const amount = denStr ? Number(numStr) / Number(denStr) : Number(numStr)
   const unit = match[2].trim()
   return { amount, unit }
 }

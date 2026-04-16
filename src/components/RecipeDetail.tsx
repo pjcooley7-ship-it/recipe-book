@@ -26,9 +26,9 @@ export function RecipeDetail({ recipe, onDeleted }: Props) {
   const hasConversions = recipe.ingredients.some((i) => i.display_metric != null)
 
   return (
-    <article className="py-14 px-16 max-w-2xl">
+    <article className="py-8 md:py-14 px-5 md:px-16 max-w-2xl">
       {/* Header */}
-      <header className="mb-10">
+      <header className="mb-8 md:mb-10">
         {recipe.source_name && (
           <p className="text-[11px] text-muted uppercase tracking-widest mb-3">
             {recipe.source_name}
@@ -37,10 +37,10 @@ export function RecipeDetail({ recipe, onDeleted }: Props) {
             )}
           </p>
         )}
-        <h2 className="font-serif text-4xl leading-tight text-ink mb-6">{recipe.title}</h2>
+        <h2 className="font-serif text-3xl md:text-4xl leading-tight text-ink mb-6">{recipe.title}</h2>
 
         {(recipe.prep_time || recipe.cook_time || recipe.servings) && (
-          <div className="flex gap-8 py-5 border-t border-b border-border">
+          <div className="flex gap-6 md:gap-8 py-4 md:py-5 border-t border-b border-border">
             {recipe.prep_time && (
               <div>
                 <span className="block text-[10px] text-muted uppercase tracking-widest mb-1">Prep</span>
@@ -84,16 +84,16 @@ export function RecipeDetail({ recipe, onDeleted }: Props) {
 
       {/* Ingredients */}
       {recipe.ingredients.length > 0 && (
-        <section className="mb-12">
-          <h3 className="font-serif text-xl text-ink mb-5">Ingredients</h3>
+        <section className="mb-10 md:mb-12">
+          <h3 className="font-serif text-xl text-ink mb-4 md:mb-5">Ingredients</h3>
           <ul className="divide-y divide-subtle">
             {recipe.ingredients.map((ing, i) => {
               const qty = metric && ing.display_metric ? ing.display_metric : ing.display_us
               const alt = metric ? ing.display_us : ing.display_metric
               return (
-                <li key={i} className="flex justify-between items-baseline py-2.5 text-sm">
-                  <span className="text-ink">{ing.name}</span>
-                  <span className="text-right ml-6 flex-shrink-0">
+                <li key={i} className="flex justify-between items-baseline py-3 text-sm">
+                  <span className="text-ink pr-4">{ing.name}</span>
+                  <span className="text-right flex-shrink-0">
                     <span className="text-muted">{qty}</span>
                     {alt && alt !== qty && (
                       <span className="text-[11px] text-gray-300 italic ml-1.5">/ {alt}</span>
@@ -108,15 +108,15 @@ export function RecipeDetail({ recipe, onDeleted }: Props) {
 
       {/* Instructions */}
       {recipe.instructions.length > 0 && (
-        <section className="mb-12">
-          <h3 className="font-serif text-xl text-ink mb-5">Instructions</h3>
-          <ol className="space-y-7" style={{ counterReset: 'step' }}>
+        <section className="mb-10 md:mb-12">
+          <h3 className="font-serif text-xl text-ink mb-4 md:mb-5">Instructions</h3>
+          <ol className="space-y-6 md:space-y-7">
             {recipe.instructions.map((step, i) => (
-              <li key={i} className="flex gap-6" style={{ counterIncrement: 'step' }}>
-                <span className="font-serif text-3xl text-border leading-tight flex-shrink-0 w-7 text-right">
+              <li key={i} className="flex gap-5 md:gap-6">
+                <span className="font-serif text-2xl md:text-3xl text-border leading-tight flex-shrink-0 w-6 md:w-7 text-right">
                   {i + 1}
                 </span>
-                <p className="text-sm leading-7 text-gray-600 pt-1">{step}</p>
+                <p className="text-sm leading-7 text-gray-600 pt-0.5">{step}</p>
               </li>
             ))}
           </ol>
@@ -124,7 +124,7 @@ export function RecipeDetail({ recipe, onDeleted }: Props) {
       )}
 
       {/* Delete */}
-      <div className="border-t border-subtle pt-8">
+      <div className="border-t border-subtle pt-6 md:pt-8">
         <button
           onClick={handleDelete}
           disabled={deleting}

@@ -75,10 +75,10 @@ export function CreateRecipeModal({ onCreated, onClose }: Props) {
 
   return (
     <div
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40"
+      className="fixed inset-0 z-50 flex items-end md:items-center justify-center bg-black/40"
       onClick={(e) => { if (e.target === e.currentTarget) onClose() }}
     >
-      <div className="bg-white w-full max-w-2xl max-h-[90vh] overflow-y-auto shadow-xl">
+      <div className="bg-white w-full md:max-w-2xl h-[92vh] md:max-h-[90vh] md:h-auto overflow-y-auto shadow-xl rounded-t-lg md:rounded-none">
         {/* Title bar */}
         <div className="flex items-center justify-between px-8 py-5 border-b border-border">
           <h2 className="font-serif text-xl text-ink">New Recipe</h2>

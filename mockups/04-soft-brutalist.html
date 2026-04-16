@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style 4 — Soft Brutalist</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  :root {
+    --bg: #FFFDF7;
+    --surface: #F5F2EB;
+    --ink: #1a1a1a;
+    --accent: #D4522A;
+    --border: 2.5px solid #1a1a1a;
+    --shadow: 4px 4px 0 #1a1a1a;
+  }
+  body { background: var(--bg); color: var(--ink); font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+  /* Header */
+  header { border-bottom: var(--border); padding: 0 32px; display: flex; align-items: stretch; gap: 0; }
+  .header-title { font-family: 'Space Mono', monospace; font-size: 14px; font-weight: 700; letter-spacing: -0.3px; padding: 16px 24px 16px 0; border-right: var(--border); display: flex; align-items: center; }
+  .header-url { flex: 1; display: flex; }
+  .header-url input { flex: 1; border: none; background: transparent; font-family: 'Space Mono', monospace; font-size: 12px; padding: 0 20px; outline: none; color: var(--ink); }
+  .header-url input::placeholder { color: #aaa; }
+  .header-url button { background: var(--accent); color: #fff; border: none; border-left: var(--border); font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; padding: 0 24px; cursor: pointer; letter-spacing: 0.5px; }
+  .header-url button:hover { background: #b8411f; }
+  .header-new { border: none; border-left: var(--border); background: transparent; font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; padding: 0 20px; cursor: pointer; color: var(--ink); }
+  .header-new:hover { background: var(--surface); }
+
+  .layout { display: flex; min-height: calc(100vh - 53px); }
+
+  /* Sidebar */
+  .sidebar { width: 280px; border-right: var(--border); padding: 24px; flex-shrink: 0; background: var(--surface); }
+  .sidebar-label { font-family: 'Space Mono', monospace; font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #888; margin-bottom: 12px; }
+  .recipe-list { list-style: none; display: flex; flex-direction: column; gap: 4px; }
+  .recipe-list li { border: 2px solid transparent; }
+  .recipe-list li.active { border: var(--border); background: var(--bg); box-shadow: 3px 3px 0 var(--ink); }
+  .recipe-list li a { display: block; padding: 12px 14px; text-decoration: none; color: var(--ink); font-size: 14px; font-weight: 500; }
+  .recipe-list li a .src { font-family: 'Space Mono', monospace; font-size: 10px; color: #888; display: block; margin-top: 2px; font-weight: 400; }
+  .recipe-list li:not(.active):hover { background: #ede8df; border-color: #ccc; }
+
+  /* Main */
+  .main { flex: 1; padding: 40px 48px; }
+  .recipe-title { font-size: 40px; font-weight: 700; line-height: 1.1; margin-bottom: 8px; letter-spacing: -1px; }
+  .recipe-source { font-family: 'Space Mono', monospace; font-size: 11px; color: #888; margin-bottom: 28px; }
+
+  .meta-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 0; border: var(--border); box-shadow: var(--shadow); margin-bottom: 36px; }
+  .meta-cell { padding: 16px 20px; border-right: var(--border); }
+  .meta-cell:last-child { border-right: none; }
+  .meta-cell .label { font-family: 'Space Mono', monospace; font-size: 9px; text-transform: uppercase; letter-spacing: 1.5px; color: #888; margin-bottom: 6px; }
+  .meta-cell .val { font-size: 20px; font-weight: 700; }
+
+  .toggle-row { display: inline-flex; align-items: center; gap: 0; margin-bottom: 32px; border: var(--border); box-shadow: var(--shadow); }
+  .toggle-opt { font-family: 'Space Mono', monospace; font-size: 12px; font-weight: 700; padding: 8px 18px; cursor: pointer; background: transparent; border: none; color: #888; }
+  .toggle-opt.active { background: var(--ink); color: var(--bg); }
+  .toggle-divider { width: 2.5px; background: var(--ink); align-self: stretch; }
+
+  .two-col { display: grid; grid-template-columns: 1fr 1fr; gap: 32px; }
+
+  .block { border: var(--border); box-shadow: var(--shadow); }
+  .block-head { font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: 1.5px; padding: 12px 20px; border-bottom: var(--border); background: var(--ink); color: var(--bg); }
+
+  .ingredients { list-style: none; }
+  .ingredients li { padding: 11px 20px; border-bottom: 2px solid #e8e2d8; display: flex; justify-content: space-between; align-items: baseline; font-size: 13px; }
+  .ingredients li:last-child { border-bottom: none; }
+  .ingredients li .qty { font-family: 'Space Mono', monospace; font-size: 11px; color: #888; text-align: right; }
+  .ingredients li .conv { color: var(--accent); font-size: 10px; display: block; margin-top: 2px; }
+
+  .instructions { list-style: none; counter-reset: step; }
+  .instructions li { counter-increment: step; padding: 16px 20px; border-bottom: 2px solid #e8e2d8; display: flex; gap: 14px; }
+  .instructions li:last-child { border-bottom: none; }
+  .instructions li::before { content: counter(step); font-family: 'Space Mono', monospace; font-size: 11px; font-weight: 700; background: var(--accent); color: #fff; width: 22px; height: 22px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; margin-top: 1px; }
+  .instructions li p { font-size: 13px; line-height: 1.7; }
+</style>
+</head>
+<body>
+  <header>
+    <div class="header-title">RECIPE BOOK</div>
+    <div class="header-url">
+      <input type="text" placeholder="Paste a recipe URL to import..." />
+      <button>IMPORT</button>
+    </div>
+    <button class="header-new">+ NEW</button>
+  </header>
+
+  <div class="layout">
+    <aside class="sidebar">
+      <p class="sidebar-label">Your Recipes</p>
+      <ul class="recipe-list">
+        <li class="active"><a href="#">Roast Chicken with Herbs<span class="src">smittenkitchen.com</span></a></li>
+        <li><a href="#">Miso Salmon Bowl<span class="src">halfbakedharvest.com</span></a></li>
+        <li><a href="#">Banana Bread<span class="src">manual</span></a></li>
+        <li><a href="#">Shakshuka<span class="src">minimalistbaker.com</span></a></li>
+        <li><a href="#">Pasta Carbonara<span class="src">seriouseats.com</span></a></li>
+      </ul>
+    </aside>
+
+    <main class="main">
+      <h1 class="recipe-title">Roast Chicken with Herbs &amp; Lemon</h1>
+      <p class="recipe-source">smittenkitchen.com &mdash; imported 2026-04-14</p>
+
+      <div class="meta-grid">
+        <div class="meta-cell"><div class="label">Prep Time</div><div class="val">15 min</div></div>
+        <div class="meta-cell"><div class="label">Cook Time</div><div class="val">1h 20m</div></div>
+        <div class="meta-cell" style="border-right:none"><div class="label">Serves</div><div class="val">4</div></div>
+      </div>
+
+      <div class="toggle-row">
+        <button class="toggle-opt active" onclick="document.querySelectorAll('.toggle-opt').forEach(b=>b.classList.remove('active'));this.classList.add('active')">US</button>
+        <div class="toggle-divider"></div>
+        <button class="toggle-opt" onclick="document.querySelectorAll('.toggle-opt').forEach(b=>b.classList.remove('active'));this.classList.add('active')">METRIC</button>
+      </div>
+
+      <div class="two-col">
+        <div class="block">
+          <div class="block-head">Ingredients</div>
+          <ul class="ingredients">
+            <li><span>Whole chicken</span><span class="qty">1 (~4 lb)<span class="conv">/ 1.8 kg</span></span></li>
+            <li><span>Unsalted butter</span><span class="qty">3 tbsp<span class="conv">/ 42 g</span></span></li>
+            <li><span>Fresh thyme</span><span class="qty">4 sprigs</span></li>
+            <li><span>Fresh rosemary</span><span class="qty">2 sprigs</span></li>
+            <li><span>Lemon, halved</span><span class="qty">1 large</span></li>
+            <li><span>Garlic cloves</span><span class="qty">6 cloves</span></li>
+            <li><span>Olive oil</span><span class="qty">2 tbsp<span class="conv">/ 30 ml</span></span></li>
+            <li><span>Kosher salt</span><span class="qty">1½ tsp</span></li>
+          </ul>
+        </div>
+
+        <div class="block">
+          <div class="block-head">Instructions</div>
+          <ol class="instructions">
+            <li><p>Preheat oven to 425°F (220°C). Pat the chicken completely dry — this is what gives you crispy skin.</p></li>
+            <li><p>Mix softened butter with chopped thyme, rosemary, salt, and pepper. Rub butter under the skin directly onto the meat.</p></li>
+            <li><p>Stuff the cavity with lemon and garlic. Truss legs and tuck wings under.</p></li>
+            <li><p>Roast breast-side up 60–80 min until thigh reads 165°F (74°C). Rest 15 min before carving.</p></li>
+          </ol>
+        </div>
+      </div>
+    </main>
+  </div>
+</body>
+</html>

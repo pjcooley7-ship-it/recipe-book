@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style 1 — Editorial</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { font-family: 'Inter', sans-serif; background: #FAFAF8; color: #1a1a1a; min-height: 100vh; }
+
+  /* Sidebar */
+  .layout { display: flex; min-height: 100vh; }
+  .sidebar { width: 260px; background: #fff; border-right: 1px solid #e8e8e4; padding: 32px 24px; flex-shrink: 0; position: sticky; top: 0; height: 100vh; overflow-y: auto; }
+  .sidebar h1 { font-family: 'Playfair Display', serif; font-size: 22px; letter-spacing: -0.3px; color: #1a1a1a; margin-bottom: 8px; }
+  .sidebar .subtitle { font-size: 11px; color: #999; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 32px; }
+  .add-btn { display: flex; align-items: center; gap: 8px; background: #1a1a1a; color: #fff; border: none; padding: 10px 16px; font-size: 13px; font-family: 'Inter', sans-serif; cursor: pointer; width: 100%; margin-bottom: 28px; }
+  .add-btn:hover { background: #333; }
+  .section-label { font-size: 10px; text-transform: uppercase; letter-spacing: 2px; color: #bbb; margin-bottom: 12px; }
+  .recipe-list { list-style: none; }
+  .recipe-list li { padding: 8px 0; border-bottom: 1px solid #f0f0ec; cursor: pointer; }
+  .recipe-list li a { text-decoration: none; font-size: 14px; color: #444; display: block; }
+  .recipe-list li a:hover { color: #1a1a1a; }
+  .recipe-list li .meta { font-size: 11px; color: #bbb; margin-top: 2px; }
+  .recipe-list li.active a { color: #1a1a1a; font-weight: 500; }
+
+  /* Main */
+  .main { flex: 1; max-width: 720px; padding: 60px 64px; }
+  .url-bar { display: flex; gap: 0; margin-bottom: 64px; border-bottom: 2px solid #1a1a1a; }
+  .url-bar input { flex: 1; border: none; background: transparent; font-family: 'Inter', sans-serif; font-size: 14px; padding: 12px 0; outline: none; color: #333; }
+  .url-bar input::placeholder { color: #bbb; }
+  .url-bar button { background: none; border: none; cursor: pointer; font-size: 13px; font-family: 'Inter', sans-serif; color: #1a1a1a; font-weight: 500; padding: 12px 0 12px 16px; }
+
+  .recipe-header { margin-bottom: 40px; }
+  .recipe-title { font-family: 'Playfair Display', serif; font-size: 42px; line-height: 1.1; color: #1a1a1a; margin-bottom: 12px; }
+  .recipe-source { font-size: 12px; color: #999; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 20px; }
+  .recipe-meta { display: flex; gap: 32px; padding: 20px 0; border-top: 1px solid #e8e8e4; border-bottom: 1px solid #e8e8e4; }
+  .recipe-meta .item { display: flex; flex-direction: column; }
+  .recipe-meta .item .label { font-size: 10px; text-transform: uppercase; letter-spacing: 1.5px; color: #bbb; margin-bottom: 4px; }
+  .recipe-meta .item .value { font-size: 14px; font-weight: 500; }
+
+  .conversion-toggle { display: inline-flex; align-items: center; gap: 8px; margin: 32px 0 24px; font-size: 12px; color: #888; cursor: pointer; border: 1px solid #e0e0dc; padding: 6px 14px; }
+  .conversion-toggle .dot { width: 30px; height: 16px; background: #e0e0dc; border-radius: 999px; position: relative; }
+  .conversion-toggle .dot.on { background: #1a1a1a; }
+  .conversion-toggle .dot::after { content: ''; position: absolute; width: 12px; height: 12px; background: #fff; border-radius: 50%; top: 2px; left: 2px; transition: left 0.15s; }
+  .conversion-toggle .dot.on::after { left: 16px; }
+
+  .section-title { font-family: 'Playfair Display', serif; font-size: 22px; margin-bottom: 20px; color: #1a1a1a; }
+  .ingredients { list-style: none; margin-bottom: 48px; }
+  .ingredients li { padding: 10px 0; border-bottom: 1px solid #f0f0ec; font-size: 15px; display: flex; justify-content: space-between; }
+  .ingredients li .qty { color: #888; font-size: 14px; }
+  .ingredients li .conversion { font-size: 12px; color: #bbb; font-style: italic; }
+
+  .instructions { counter-reset: step; list-style: none; }
+  .instructions li { counter-increment: step; display: flex; gap: 24px; margin-bottom: 28px; }
+  .instructions li::before { content: counter(step); font-family: 'Playfair Display', serif; font-size: 28px; color: #e0e0dc; flex-shrink: 0; line-height: 1.2; width: 28px; }
+  .instructions li p { font-size: 15px; line-height: 1.75; color: #444; }
+
+  /* Url bar paste hint */
+  .hint { font-size: 12px; color: #bbb; text-align: center; margin-top: -40px; margin-bottom: 48px; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <h1>My Recipes</h1>
+    <p class="subtitle">Personal Collection</p>
+    <button class="add-btn">+ Add Recipe</button>
+    <p class="section-label">Saved</p>
+    <ul class="recipe-list">
+      <li class="active"><a href="#">Roast Chicken with Herbs<div class="meta">Smitten Kitchen</div></a></li>
+      <li><a href="#">Miso Salmon Bowl<div class="meta">Half Baked Harvest</div></a></li>
+      <li><a href="#">Banana Bread<div class="meta">Manual</div></a></li>
+      <li><a href="#">Shakshuka<div class="meta">The Minimalist Baker</div></a></li>
+      <li><a href="#">Pasta Carbonara<div class="meta">Serious Eats</div></a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <div class="url-bar">
+      <input type="text" placeholder="Paste a recipe URL to import..." />
+      <button>Import</button>
+    </div>
+
+    <div class="recipe-header">
+      <p class="recipe-source">Smitten Kitchen &middot; smittenkitchen.com</p>
+      <h2 class="recipe-title">Roast Chicken<br>with Herbs &amp; Lemon</h2>
+      <div class="recipe-meta">
+        <div class="item"><span class="label">Prep</span><span class="value">15 min</span></div>
+        <div class="item"><span class="label">Cook</span><span class="value">1 hr 20 min</span></div>
+        <div class="item"><span class="label">Serves</span><span class="value">4</span></div>
+      </div>
+    </div>
+
+    <div style="display:flex;align-items:center;gap:12px;margin:32px 0 24px;">
+      <span style="font-size:12px;color:#888;">US</span>
+      <div class="conversion-toggle" onclick="this.querySelector('.dot').classList.toggle('on')">
+        <div class="dot"></div>
+      </div>
+      <span style="font-size:12px;color:#888;">Metric</span>
+    </div>
+
+    <h3 class="section-title">Ingredients</h3>
+    <ul class="ingredients">
+      <li><span>Whole chicken</span><span class="qty">1 (about 4 lb) <span class="conversion">/ 1.8 kg</span></span></li>
+      <li><span>Unsalted butter, softened</span><span class="qty">3 tbsp <span class="conversion">/ 42 g</span></span></li>
+      <li><span>Fresh thyme</span><span class="qty">4 sprigs</span></li>
+      <li><span>Fresh rosemary</span><span class="qty">2 sprigs</span></li>
+      <li><span>Lemon, halved</span><span class="qty">1 large</span></li>
+      <li><span>Garlic cloves, smashed</span><span class="qty">6 cloves</span></li>
+      <li><span>Olive oil</span><span class="qty">2 tbsp <span class="conversion">/ 30 ml</span></span></li>
+      <li><span>Kosher salt</span><span class="qty">1½ tsp <span class="conversion">/ 7 ml</span></span></li>
+      <li><span>Black pepper</span><span class="qty">½ tsp</span></li>
+    </ul>
+
+    <h3 class="section-title">Instructions</h3>
+    <ol class="instructions">
+      <li><p>Preheat oven to 425°F (220°C). Pat the chicken completely dry with paper towels — this is what gives you crispy skin.</p></li>
+      <li><p>Mix softened butter with chopped thyme, rosemary, salt, and pepper. Carefully loosen the skin over the breast and rub butter directly onto the meat.</p></li>
+      <li><p>Stuff the cavity with lemon halves and garlic. Truss the legs loosely with kitchen twine and tuck the wings under.</p></li>
+      <li><p>Roast breast-side up for 60–80 minutes, until a thermometer in the thickest part of the thigh reads 165°F (74°C).</p></li>
+      <li><p>Rest uncovered on a cutting board for 15 minutes before carving.</p></li>
+    </ol>
+  </main>
+</div>
+</body>
+</html>

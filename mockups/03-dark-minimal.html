@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Style 3 — Dark Minimal</title>
+<link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: #0d0d0d; color: #e0e0e0; font-family: 'DM Sans', sans-serif; min-height: 100vh; }
+
+  .layout { display: flex; min-height: 100vh; }
+
+  .sidebar { width: 240px; background: #111; border-right: 1px solid #1f1f1f; padding: 28px 20px; flex-shrink: 0; }
+  .logo { font-family: 'DM Mono', monospace; font-size: 13px; color: #555; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 32px; display: flex; align-items: center; gap: 10px; }
+  .logo-dot { width: 6px; height: 6px; background: #4ade80; border-radius: 50%; }
+  .add-btn { width: 100%; background: transparent; border: 1px solid #2a2a2a; color: #888; font-family: 'DM Mono', monospace; font-size: 11px; padding: 10px; cursor: pointer; text-align: left; margin-bottom: 28px; letter-spacing: 0.5px; transition: border-color 0.15s, color 0.15s; }
+  .add-btn:hover { border-color: #4ade80; color: #4ade80; }
+  .nav-label { font-size: 10px; font-family: 'DM Mono', monospace; color: #333; text-transform: uppercase; letter-spacing: 2px; margin-bottom: 10px; }
+  .nav-list { list-style: none; }
+  .nav-list li { padding: 0; }
+  .nav-list li a { display: block; padding: 9px 12px; font-size: 13px; color: #555; text-decoration: none; border-left: 2px solid transparent; transition: color 0.1s, border-color 0.1s; }
+  .nav-list li a:hover { color: #ccc; border-left-color: #333; }
+  .nav-list li.active a { color: #e0e0e0; border-left-color: #4ade80; }
+  .nav-list li .src { font-family: 'DM Mono', monospace; font-size: 10px; color: #333; display: block; margin-top: 1px; }
+
+  .main { flex: 1; padding: 48px 56px; max-width: 780px; }
+  .url-row { display: flex; gap: 0; margin-bottom: 56px; }
+  .url-row input { flex: 1; background: #111; border: 1px solid #1f1f1f; border-right: none; color: #ccc; font-family: 'DM Mono', monospace; font-size: 13px; padding: 12px 16px; outline: none; }
+  .url-row input:focus { border-color: #2a2a2a; }
+  .url-row input::placeholder { color: #333; }
+  .url-row button { background: #4ade80; color: #0d0d0d; border: none; font-family: 'DM Mono', monospace; font-size: 12px; font-weight: 500; padding: 12px 20px; cursor: pointer; letter-spacing: 0.5px; }
+  .url-row button:hover { background: #22c55e; }
+
+  .crumb { font-family: 'DM Mono', monospace; font-size: 11px; color: #333; margin-bottom: 20px; }
+  .crumb span { color: #555; }
+
+  .title { font-size: 36px; font-weight: 300; color: #fff; line-height: 1.15; margin-bottom: 6px; letter-spacing: -0.5px; }
+  .source-line { font-family: 'DM Mono', monospace; font-size: 11px; color: #444; margin-bottom: 28px; }
+
+  .meta-row { display: flex; gap: 0; margin-bottom: 40px; }
+  .meta-item { flex: 1; padding: 16px 20px; background: #111; border: 1px solid #1a1a1a; border-left: none; }
+  .meta-item:first-child { border-left: 1px solid #1a1a1a; }
+  .meta-item .label { font-family: 'DM Mono', monospace; font-size: 9px; color: #444; text-transform: uppercase; letter-spacing: 1.5px; margin-bottom: 6px; }
+  .meta-item .val { font-size: 18px; font-weight: 300; color: #e0e0e0; }
+
+  .toggle-row { display: inline-flex; align-items: center; gap: 10px; margin-bottom: 36px; background: #111; border: 1px solid #1f1f1f; padding: 8px 16px; cursor: pointer; }
+  .toggle-label { font-family: 'DM Mono', monospace; font-size: 11px; color: #555; }
+  .toggle-label.active { color: #4ade80; }
+  .toggle-pip { width: 28px; height: 14px; background: #1f1f1f; border-radius: 999px; position: relative; }
+  .toggle-pip.on { background: #166534; }
+  .toggle-pip::after { content: ''; width: 10px; height: 10px; background: #4ade80; border-radius: 50%; position: absolute; top: 2px; left: 2px; transition: left 0.15s; }
+  .toggle-pip.on::after { left: 16px; }
+
+  .section { margin-bottom: 44px; }
+  .section-head { font-family: 'DM Mono', monospace; font-size: 11px; text-transform: uppercase; letter-spacing: 2px; color: #444; margin-bottom: 16px; display: flex; align-items: center; gap: 12px; }
+  .section-head::after { content: ''; flex: 1; height: 1px; background: #1a1a1a; }
+
+  .ingredients { list-style: none; }
+  .ingredients li { display: flex; justify-content: space-between; align-items: baseline; padding: 11px 0; border-bottom: 1px solid #161616; }
+  .ingredients li .name { font-size: 14px; color: #ccc; }
+  .ingredients li .qty { font-family: 'DM Mono', monospace; font-size: 12px; color: #555; display: flex; align-items: baseline; gap: 8px; }
+  .ingredients li .conv { color: #4ade80; font-size: 11px; }
+
+  .instructions { list-style: none; counter-reset: step; }
+  .instructions li { counter-increment: step; display: grid; grid-template-columns: 48px 1fr; gap: 16px; padding: 16px 0; border-bottom: 1px solid #161616; }
+  .instructions li::before { content: counter(step, decimal-leading-zero); font-family: 'DM Mono', monospace; font-size: 11px; color: #2a2a2a; padding-top: 2px; }
+  .instructions li p { font-size: 14px; line-height: 1.8; color: #999; font-weight: 300; }
+</style>
+</head>
+<body>
+<div class="layout">
+  <aside class="sidebar">
+    <div class="logo"><span class="logo-dot"></span>RECIPES</div>
+    <button class="add-btn">+ NEW RECIPE</button>
+    <p class="nav-label">Library</p>
+    <ul class="nav-list">
+      <li class="active"><a href="#">Roast Chicken<span class="src">smittenkitchen.com</span></a></li>
+      <li><a href="#">Miso Salmon Bowl<span class="src">halfbakedharvest.com</span></a></li>
+      <li><a href="#">Banana Bread<span class="src">manual</span></a></li>
+      <li><a href="#">Shakshuka<span class="src">minimalistbaker.com</span></a></li>
+      <li><a href="#">Pasta Carbonara<span class="src">seriouseats.com</span></a></li>
+    </ul>
+  </aside>
+
+  <main class="main">
+    <div class="url-row">
+      <input type="text" placeholder="https://..." />
+      <button>IMPORT</button>
+    </div>
+
+    <div class="crumb">library / <span>roast-chicken-herbs-lemon</span></div>
+    <h1 class="title">Roast Chicken with<br>Herbs &amp; Lemon</h1>
+    <p class="source-line">smittenkitchen.com &mdash; imported 2026-04-14</p>
+
+    <div class="meta-row">
+      <div class="meta-item"><div class="label">Prep</div><div class="val">15m</div></div>
+      <div class="meta-item"><div class="label">Cook</div><div class="val">1h 20m</div></div>
+      <div class="meta-item"><div class="label">Serves</div><div class="val">4</div></div>
+    </div>
+
+    <div class="toggle-row" onclick="this.querySelector('.toggle-pip').classList.toggle('on')">
+      <span class="toggle-label active">US</span>
+      <div class="toggle-pip"></div>
+      <span class="toggle-label">Metric</span>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Ingredients</div>
+      <ul class="ingredients">
+        <li><span class="name">Whole chicken</span><span class="qty">1 (~4 lb) <span class="conv">/ 1.8 kg</span></span></li>
+        <li><span class="name">Unsalted butter, softened</span><span class="qty">3 tbsp <span class="conv">/ 42 g</span></span></li>
+        <li><span class="name">Fresh thyme</span><span class="qty">4 sprigs</span></li>
+        <li><span class="name">Fresh rosemary</span><span class="qty">2 sprigs</span></li>
+        <li><span class="name">Lemon, halved</span><span class="qty">1 large</span></li>
+        <li><span class="name">Garlic cloves, smashed</span><span class="qty">6 cloves</span></li>
+        <li><span class="name">Olive oil</span><span class="qty">2 tbsp <span class="conv">/ 30 ml</span></span></li>
+        <li><span class="name">Kosher salt</span><span class="qty">1½ tsp</span></li>
+      </ul>
+    </div>
+
+    <div class="section">
+      <div class="section-head">Instructions</div>
+      <ol class="instructions">
+        <li><p>Preheat oven to 425°F (220°C). Pat the chicken completely dry with paper towels — this is what gives you crispy skin.</p></li>
+        <li><p>Mix softened butter with chopped thyme, rosemary, salt, and pepper. Loosen skin over the breast and rub butter directly onto the meat.</p></li>
+        <li><p>Stuff the cavity with lemon halves and garlic. Truss legs loosely and tuck wings under.</p></li>
+        <li><p>Roast breast-side up for 60–80 minutes until thigh reads 165°F (74°C). Rest 15 minutes before carving.</p></li>
+      </ol>
+    </div>
+  </main>
+</div>
+</body>
+</html>
